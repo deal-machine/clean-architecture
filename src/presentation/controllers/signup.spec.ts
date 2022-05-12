@@ -87,7 +87,7 @@ describe("Signup Controller", () => {
     expect(httpResponse.body).toEqual(new MissingParamError("password"));
   });
 
-  test("Should return 400 if no password is provided", () => {
+  test("Should return 400 if no passwordConfirmation is provided", () => {
     const { sut } = makeSut();
 
     const httpRequest: HttpRequest = {
@@ -137,8 +137,7 @@ describe("Signup Controller", () => {
       },
     };
 
-    const httpResponse = sut.handle(httpRequest);
-    // console.log(httpResponse);
+    sut.handle(httpRequest);
     expect(isValidSpy).toHaveBeenCalledWith("any_email@mail.com");
   });
 
