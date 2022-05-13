@@ -7,6 +7,10 @@ interface MakeSutTypes {
   emailValidatorStub: EmailValidator;
 }
 
+// factory pattern
+
+//system under test
+
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
     isValid(email: string): boolean {
@@ -15,16 +19,7 @@ const makeEmailValidator = (): EmailValidator => {
   }
   return new EmailValidatorStub();
 };
-const makeEmailValidatorWithError = (): EmailValidator => {
-  class EmailValidatorStub implements EmailValidator {
-    isValid(email: string): boolean {
-      throw new Error();
-    }
-  }
-  return new EmailValidatorStub();
-};
 
-//system under test
 const makeSut = (): MakeSutTypes => {
   const emailValidatorStub = makeEmailValidator();
   const sut = new SignUpController(emailValidatorStub);
@@ -128,6 +123,7 @@ describe("Signup Controller", () => {
   test("Should be able validate EmailValidator with correct email", () => {
     const { sut, emailValidatorStub } = makeSut();
     const isValidSpy = jest.spyOn(emailValidatorStub, "isValid");
+
     const httpRequest: HttpRequest = {
       body: {
         name: "any_name",
@@ -142,9 +138,10 @@ describe("Signup Controller", () => {
   });
 
   test("Should return 500 if EmailValidator throws", () => {
-    const emailValidatorStub = makeEmailValidatorWithError();
-    const sut = new SignUpController(emailValidatorStub);
-
+    const { emailValidatorStub, sut } = makeSut();
+    jest.spyOn(emailValidatorStub, "isValid").mockImplementationOnce(() => {
+      throw new Error();
+    });
     const httpRequest: HttpRequest = {
       body: {
         name: "any_name",
@@ -154,7 +151,6 @@ describe("Signup Controller", () => {
       },
     };
     const httpResponse = sut.handle(httpRequest);
-
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
   });
