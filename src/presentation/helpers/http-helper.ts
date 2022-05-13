@@ -1,13 +1,17 @@
 import { ServerError } from "../errors";
 import { HttpResponse } from "../protocols";
 
-export function badRequest(error: Error): HttpResponse {
-  return { statusCode: 400, body: error };
-}
+export const badRequest = (error: Error): HttpResponse => ({
+  statusCode: 400,
+  body: error,
+});
 
-export function serverError(): HttpResponse {
-  return {
-    statusCode: 500,
-    body: new ServerError(),
-  };
-}
+export const serverError = (): HttpResponse => ({
+  statusCode: 500,
+  body: new ServerError(),
+});
+
+export const success = (data: any): HttpResponse => ({
+  statusCode: 200,
+  body: data,
+});
