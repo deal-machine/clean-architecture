@@ -12,7 +12,6 @@ import {
   InvalidParamError,
   ServerError,
 } from "../../errors";
-import { rejects } from "assert";
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
