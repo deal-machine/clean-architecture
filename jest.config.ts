@@ -8,6 +8,7 @@ export default {
     "!<rootDir>/src/**/*-protocols.ts",
     "!**/protocols/**",
   ],
+  preset: "@shelf/jest-mongodb",
   transform: {
     ".+\\.ts$": "ts-jest",
   },
