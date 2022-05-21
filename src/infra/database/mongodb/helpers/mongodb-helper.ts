@@ -11,4 +11,7 @@ export const MongoHelper = {
   getCollection(name: string): Collection {
     return this.client.db().collection(name);
   },
+  async clearCollection(name: string): Promise<void> {
+    return this.client.db().collection(name).deleteMany({});
+  },
 };
